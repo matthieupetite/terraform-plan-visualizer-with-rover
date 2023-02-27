@@ -25,8 +25,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
-        with:
-          working-directory: ./src
+
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -50,29 +49,33 @@ jobs:
           directory: ./src
           file_name: .env
           fail_on_empty: false
-       - name: Azure Login
-        # uses: Azure/login@v1.4.6
-          with:
-            # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-            creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
-        - name: Terraform fmt
-          id: fmt
-          run: terraform fmt -check
+      #- name: Azure Login
+      #  # uses: Azure/login@v1.4.6
+      #    with:
+      #      # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+      #      creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
 
-          continue-on-error: true
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+          working-directory: ./src
+        continue-on-error: true
 
-        - name: Terraform Init
-          id: init
-          run: terraform init --backend-config ./backend.tfvars
+      - name: Terraform Init
+        id: init
+        run: terraform init --backend-config ./backend.tfvars
+          working-directory: ./src
 
-        - name: Terraform Validate
-          id: validate
-          run: terraform validate -no-color
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+          working-directory: ./src
 
-        - name: Terraform Plan
-          id: plan
-          run: terraform plan -no-color
-          continue-on-error: true
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        continue-on-error: true
+          working-directory: ./src
 
 
 
