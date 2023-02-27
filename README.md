@@ -93,6 +93,14 @@ The main step is the ```Generate terraform plan website```. Basically it calls t
 
 Note that your are able to configure the terraform.tfvars file and the backend.tfvars file quite easily.
 
+## And the result is ...
+
+Here is the result you get after the pipeline ran:
+
+![rover result](./docs/assets/rover-display-result.png)
+
+To see the website live please visit that website [https://matthieupetite.github.io/terraform-plan-visualizer-with-rover/](https://matthieupetite.github.io/terraform-plan-visualizer-with-rover/).
+
 ## To go further
 
 The pipeline displayed here is quite simple and must be reworked to:
