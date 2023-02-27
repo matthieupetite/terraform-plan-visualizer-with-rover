@@ -84,7 +84,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: im2nguyen/rover
-          options: -v ./src/:/src/ --env-file ./src/.env
+          options: -v src:/src --env-file ./src/.env
           run: /bin/rover -workingDir . -tfVarsFile ./terraform.tfvars -tfBackendConfig ./backend.tfvars -standalone true -genImage true
 
 
