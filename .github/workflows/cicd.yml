@@ -23,20 +23,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: export environment variables
-        run: |
-          export ARM_CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
-          export ARM_CLIENT_ID=${{ secrets.CLIENT_ID }}
-          export ARM_TENANT_ID=${{ secrets.TENANT_ID }}
-          export ARM_SUBSCRIPTION_ID=${{ secrets.SUBSCRIPTION_ID }}
+      - name: checkout repo
+        uses: actions/checkout@v3
 
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
@@ -65,14 +53,14 @@ jobs:
           args: '--check'
         continue-on-error: true
       
-      - name: 'Generate terraform plan vizualizer'
+      - name: 'Generate terraform plan website'
         uses: addnab/docker-run-action@v3
         with:
           image: im2nguyen/rover
           options: -v ${{ github.workspace }}/src:/src --env-file ./src/.env
           run: /bin/rover -tfVarsFile ./terraform.tfvars -tfBackendConfig ./backend.tfvars -standalone true -genImage true
       
-      - name: "Unpack terraform plan vizualizer result"
+      - name: "Unpack terraform plan vizualizer website"
         uses: montudor/action-zip@v1
         with:
           args: unzip -qq ./src/rover.zip -d ./rover
