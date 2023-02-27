@@ -37,7 +37,7 @@ jobs:
           export ARM_CLIENT_ID=${{ secrets.CLIENT_ID }}
           export ARM_TENANT_ID=${{ secrets.TENANT_ID }}
           export ARM_SUBSCRIPTION_ID=${{ secrets.SUBSCRIPTION_ID }}
-          
+
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
@@ -79,5 +79,12 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
           ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+      
+      - name: 'Generate terraform plan vizualizer'
+        users: addnab/docker-run-action@v3
+        with:
+          image: im2nguyen/rover
+          options: -v ./src/:/src/ --env-file ./src/.env
+          run: /bin/rover -workingDir . -tfVarsFile ./terraform.tfvars -tfBackendConfig ./backend.tfvars -standalone true -genImage true
 
 
