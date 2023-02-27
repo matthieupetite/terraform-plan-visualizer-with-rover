@@ -88,5 +88,10 @@ jobs:
           image: im2nguyen/rover
           options: -v ${{ github.workspace }}/src:/src --env-file ./src/.env
           run: ls -la . && /bin/rover -tfVarsFile ./terraform.tfvars -tfBackendConfig ./backend.tfvars -standalone true -genImage true
+      
+      - name: "Unpack terraform plan vizualizer result"
+        uses: montudor/action-zip@v1
+        with:
+          args: unzip -qq ./src/rover.zip -d ./rover
 
 
