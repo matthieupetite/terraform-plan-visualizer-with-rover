@@ -48,6 +48,9 @@ jobs:
           directory: ./src
           file_name: .env
           fail_on_empty: false
+      
+      - name: display env file
+        run: cat ./src/.env
 
       #- name: Azure Login
       #  uses: Azure/login@v1.4.6
