@@ -77,7 +77,12 @@ jobs:
         with:
           args: unzip -qq ./src/rover.zip -d ./rover
       
-      - name: display result folder content
-        run: ls -la ./rover
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: gh-pages
+          FOLDER: rover
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
