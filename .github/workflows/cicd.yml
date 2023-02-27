@@ -24,6 +24,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          working-directory: ./src
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -36,11 +39,40 @@ jobs:
           export ARM_CLIENT_ID=${{ secrets.CLIENT_ID }}
           export ARM_TENANT_ID=${{ secrets.TENANT_ID }}
           export ARM_SUBSCRIPTION_ID=${{ secrets.SUBSCRIPTION_ID }}
-      - name: Azure Login
-        uses: Azure/login@v1.4.6
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1.3
         with:
-          # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-          creds: {"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}
+          envkey_DEBUG: false
+          envkey_ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          envkey_ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          envkey_ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
+          envkey_ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+          directory: ./src
+          file_name: .env
+          fail_on_empty: false
+       - name: Azure Login
+        # uses: Azure/login@v1.4.6
+          with:
+            # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+            creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
+        - name: Terraform fmt
+          id: fmt
+          run: terraform fmt -check
+
+          continue-on-error: true
+
+        - name: Terraform Init
+          id: init
+          run: terraform init --backend-config ./backend.tfvars
+
+        - name: Terraform Validate
+          id: validate
+          run: terraform validate -no-color
+
+        - name: Terraform Plan
+          id: plan
+          run: terraform plan -no-color
+          continue-on-error: true
 
 
 
