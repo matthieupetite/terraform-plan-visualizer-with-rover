@@ -41,10 +41,10 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+          envkey_ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          envkey_ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          envkey_ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
+          envkey_ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
           directory: ./src
           file_name: .env
           fail_on_empty: false
