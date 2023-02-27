@@ -85,6 +85,6 @@ jobs:
         with:
           image: im2nguyen/rover
           options: -v src:/src --env-file ./src/.env
-          run: /bin/rover -workingDir . -tfVarsFile ./terraform.tfvars -tfBackendConfig ./backend.tfvars -standalone true -genImage true
+          run: /bin/rover -workingDir /src -tfVarsFile ./terraform.tfvars -tfBackendConfig ./backend.tfvars -standalone true -genImage true
 
 
