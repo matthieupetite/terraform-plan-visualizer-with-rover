@@ -52,10 +52,10 @@ jobs:
           file_name: .env
           fail_on_empty: false
       - name: Azure Login
-        # uses: Azure/login@v1.4.6
-          with:
-            # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-            creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
+        uses: Azure/login@v1.4.6
+        with:
+          # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+          creds: '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ secrets.SUBSCRIPTION_ID }}","tenantId":"${{ secrets.TENANT_ID }}"}'
 
       - name: Terraform fmt
         id: fmt
